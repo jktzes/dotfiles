@@ -181,4 +181,4 @@ DEFAULT_USER='Ezo'
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-alias config='/usr/bin/git --git-dir=/Users/Ezo/.cfg/ --work-tree=/Users/Ezo'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
