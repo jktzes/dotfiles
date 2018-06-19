@@ -31,6 +31,7 @@ alias vs='vim ~/.ssh/config'
 alias so='source ~/.zshrc'
 alias sshh='chmod 700 ~/.ssh/config'
 function ch(){ chmod 700 $1 }
+function vadd(){cd $1 && git config --get remote.origin.url | pbcopy && cd - && config submodule add `pbpaste` $1}
 # Add Docker support
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
