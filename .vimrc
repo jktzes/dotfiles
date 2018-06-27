@@ -1,29 +1,133 @@
-execute pathogen#infect()
+set nocompatible              
+filetype off                  
 syntax on
-filetype plugin indent on
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'Valloric/MatchTagAlways'
+Plugin 'chrisbra/Recover.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'w0rp/ale'
+Plugin 'chrisbra/csv'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/goyo.vim'
+Plugin 'Yggdroot/indentLine'
+Plugin 'yegappan/mru'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'danro/rename.vim'
+Plugin 'ervandew/supertab'
+Plugin 'majutsushi/tagbar'
+Plugin 'wincent/terminus'
+Plugin 'SirVer/ultisnips'
+Plugin 'mbbill/undotree'
+Plugin 'tpope/vim-capslock'
+Plugin 'alvan/vim-closetag'
+Plugin 'ap/vim-css-color'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-eunuch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'farmergreg/vim-lastplace'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'tpope/vim-obsession'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'heavenshell/vim-pydocstring'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-sleuth'
+Plugin 'connorholyday/vim-snazzy'
+Plugin 'tpope/vim-surround'
+Plugin 'janko-m/vim-test'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'bronson/vim-visual-star-search'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 
 " Set autorefresh when this file is edited
 :set autoread
 " Set auto source
 autocmd! bufwritepost ~/.vimrc source %
-" Initiate ctags
-:set tags=~/mytags
+" ctags optimization
+set autochdir
+set tags=tags;
+" open tag in new tab
+:nnoremap <silent><C-]> <C-w><C-]><C-w>T
 " Hide status line
-set laststatus=0
-" Set up fzf
-set rtp+=/usr/local/opt/fzf
+set laststatus=1
+augroup atcmds
+    autocmd!
+    autocmd FileType nerdtree syntax match NERDTreeHideCWD #^[</].*$# conceal
+    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd BufNewFile,BufRead *.scss set ft=scss.css
+    autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+    " for C-like  programming where comments have explicit end
+    " characters, if starting a new line in the middle of a comment automatically
+    " insert the comment leader characters:
+    autocmd FileType c,cpp,java set formatoptions+=ro
+    autocmd FileType c set omnifunc=ccomplete#Complete
+    
+    " two space for html css and etc
+    autocmd FileType html,xhtml,css,xml,xslt,rb set shiftwidth=2 softtabstop=2
+    
+    " two space indentation for some files
+    autocmd FileType vim,lua,nginx set shiftwidth=2 softtabstop=2
+    
+    " for CSS, also have things in braces indented:
+    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+    
+    " add completion for xHTML
+    autocmd FileType xhtml,html set omnifunc=htmlcomplete#CompleteTags
+    
+    " add completion for XML
+    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+    
+    " don't expand tabs to spaces for makefiles
+    autocmd FileType make setlocal noexpandtab 
+    
+    " ensure normal tabs in assembly files
+    " and set to NASM syntax highlighting
+    autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0 syntax=nasm
+augroup end
 " KEY MAPS
 " F1 key is reserved as help function
-:let mapleader = ","
-:noremap <F2>  :UndotreeToggle<CR>
-:noremap <F5> :!open -a Safari %<CR><CR>
-:noremap <F7>  :tabp <Enter>
-:noremap <F8>  :tabn <Enter>
-:noremap <F10> :tabc <Enter>
+let mapleader=" "
 :inoremap jk <esc>
-:inoremap <esc> <nop>
+:inoremap JK <esc> 
+"never remap <C-c> since it's the last resort to esc
+:nmap vv :tabe ~/.vimrc <CR>
+:cmap <esc> UndotreeToggle <CR>
+:cmap [ UltiSnipsEdit <CR>
+map <F1> :tabp <CR>
+imap <F1> :tabp <CR>
+:noremap <F2>  :tabn<CR>
+"in tmux <F3>: previous window
+"in tmux <F4>: next window
+:noremap <F5>  :!open -a Safari %<CR><CR>
+"in tmux <F6>: the master key
+":noremap <F7>  
+":noremap <F8>  
+":noremap <F9>
+":noremap <F10> :tabc <CR>
+:"noremap <F11> 
+":noremap <F12> 
+
 " Toggle Tagbar
 :noremap <leader>t :TagbarToggle<CR>
+" navigate like Firefox
+nnoremap <C-t>     :tabnew<CR>
+nnoremap <C-w>     :tabc<CR>
+inoremap <C-t>     <Esc>:tabnew<CR>
 " Add global youcompleteme conf
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
@@ -31,9 +135,7 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_show_diagnostics_ui = 0
 
 " Add html autocomplete to vim and sassy support
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 :set omnifunc=csscomplete#CompleteCSS
-autocmd BufNewFile,BufRead *.scss set ft=scss.css
           
 let g:mta_use_matchparen_group = 1
 
@@ -45,18 +147,11 @@ let g:mta_use_matchparen_group = 1
 imap ,/ </<C-X><C-O>
 
 " Add docstring support
-autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 nmap <silent> <C-d> <Plug>(pydocstring)
 
 " Remap the weird nerdtree tab bug
 map <leader>e :vertical resize 25<CR>
 
-" Change tab to four spaces
-:set tabstop=4
-:set shiftwidth=4
-:set expandtab
-:set autoindent
-" :set smartindent " Disable it if indentation has problems
 
 " Set highlight for search
 :set hlsearch
@@ -173,3 +268,84 @@ nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
 nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
 nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
 nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+let g:NERDCustomDelimiters = { 'c' : { 'left': '//','right': '' }, 'js': { 'left': '//','right': '' } }
+
+" Show index number for tab
+set showtabline=1  " 1 to show tabline only when more than one tab is present
+set tabline=%!MyTabLine()  " custom tab pages line
+function! MyTabLine()
+        let s = '' " complete tabline goes here
+        " loop through each tab page
+        for t in range(tabpagenr('$'))
+                " set highlight
+                if t + 1 == tabpagenr()
+                        let s .= '%#TabLineSel#'
+                else
+                        let s .= '%#TabLine#'
+                endif
+                " set the tab page number (for mouse clicks)
+                let s .= '%' . (t + 1) . 'T'
+                let s .= ' '
+                " set page number string
+                let s .= t + 1 . ' '
+                " get buffer names and statuses
+                let n = ''      "temp string for buffer names while we loop and check buftype
+                let m = 0       " &modified counter
+                let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
+                " loop through each buffer in a tab
+                for b in tabpagebuflist(t + 1)
+                        " buffer types: quickfix gets a [Q], help gets [H]{base fname}
+                        " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+                        if getbufvar( b, "&buftype" ) == 'help'
+                                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+                        elseif getbufvar( b, "&buftype" ) == 'quickfix'
+                                let n .= '[Q]'
+                        else
+                                let n .= pathshorten(bufname(b))
+                        endif
+                        " check and ++ tab's &modified count
+                        if getbufvar( b, "&modified" )
+                                let m += 1
+                        endif
+                        " no final ' ' added...formatting looks better done later
+                        if bc > 1
+                                let n .= ' '
+                        endif
+                        let bc -= 1
+                endfor
+                " add modified label [n+] where n pages in tab are modified
+                if m > 0
+                        let s .= '[' . m . '+]'
+                endif
+                " select the highlighting for the buffer names
+                " my default highlighting only underlines the active tab
+                " buffer names.
+                if t + 1 == tabpagenr()
+                        let s .= '%#TabLineSel#'
+                else
+                        let s .= '%#TabLine#'
+                endif
+                " add buffer names
+                if n == ''
+                        let s.= '[New]'
+                else
+                        let s .= n
+                endif
+                " switch to no underlining and add final space to buffer list
+                let s .= ' '
+        endfor
+        " after the last tab fill with TabLineFill and reset tab page nr
+        let s .= '%#TabLineFill#%T'
+        " right-align the label to close the current tab page
+        if tabpagenr('$') > 1
+                let s .= '%=%#TabLineFill#%999Xclose'
+        endif
+        return s
+endfunction
