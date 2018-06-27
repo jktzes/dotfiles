@@ -1,7 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
-export ZSH=/Users/Ezo/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 export TERM=xterm-256color
 # Setup golang
 export GOPATH=$HOME/golang
@@ -33,7 +33,6 @@ alias so='source ~/.zshrc'
 alias m='make'
 alias mc='make clean'
 alias sshh='chmod 700 ~/.ssh/config'
-function tr(){tmux rename-session $1}
 function ch(){chmod 700 $1 }
 function vadd(){cd $1 && git config --get remote.origin.url | pbcopy && cd - && config submodule add `pbpaste` $1}
 # Add Docker support
