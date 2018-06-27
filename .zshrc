@@ -12,6 +12,7 @@ export PATH=$PATH:$GOROOT/bin
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Add my first customed path
 export PATH=/Users/Ezo/custom/docker/bin:$PATH
+export EDITOR='/usr/bin/vim'
 eval $(thefuck --alias)
 function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
@@ -29,8 +30,11 @@ alias vz='vim ~/.zshrc'
 alias vt='vim ~/.tmux.conf'
 alias vs='vim ~/.ssh/config'
 alias so='source ~/.zshrc'
+alias m='make'
+alias mc='make clean'
 alias sshh='chmod 700 ~/.ssh/config'
-function ch(){ chmod 700 $1 }
+function tr(){tmux rename-session $1}
+function ch(){chmod 700 $1 }
 function vadd(){cd $1 && git config --get remote.origin.url | pbcopy && cd - && config submodule add `pbpaste` $1}
 # Add Docker support
 fpath=(~/.zsh/completion $fpath)
@@ -39,6 +43,7 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 #add z to zsh
 . /usr/local/etc/profile.d/z.sh
+path+=('/Library/Frameworks/Mono.framework/Versions/Current/bin')
 #alias matlabgui='/Applications/MATLAB_R2017b.app/bin/matlab -nosplash'
 #alias matlab='/Applications/MATLAB_R2017b.app/bin/matlab -nodesktop -nosplash'
 #alias tf='source .venvs/tensorflow/bin/activate'
