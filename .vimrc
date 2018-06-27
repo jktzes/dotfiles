@@ -199,7 +199,7 @@ if !exists('g:undotree_SetFocusWhenToggle')
 endif
 " COLOR THEMES
 syntax on
-colorscheme snazzy
+silent! colorscheme snazzy
 " Font
 :set guifont=Menlo\ for\ Powerline
 
