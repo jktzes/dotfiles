@@ -186,4 +186,7 @@ DEFAULT_USER='Ezo'
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$(brew --prefix)/share/man:$MANPATH"
+export INFOPATH="$(brew --prefix)/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
