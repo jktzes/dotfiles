@@ -185,8 +185,8 @@ DEFAULT_USER='Ezo'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.linuxbrew/bin:$PATH"
-export MANPATH="$(brew --prefix)/share/man:$MANPATH"
-export INFOPATH="$(brew --prefix)/share/info:$INFOPATH"
+fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
+export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
