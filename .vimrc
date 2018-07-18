@@ -261,6 +261,8 @@ let g:ale_lint_on_save = 1
 
 " Change multicursor quit key
 let g:multi_cursor_quit_key = '`'
+" enable backspace for multicursor
+set backspace=indent,eol,start
 
 " these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
 nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n

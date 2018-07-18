@@ -13,7 +13,6 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Add my first customed path
 export PATH=/Users/Ezo/custom/docker/bin:$PATH
 export EDITOR='/usr/bin/vim'
-eval $(thefuck --alias)
 function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
 alias ctags="`brew --prefix`/bin/ctags"
@@ -32,7 +31,10 @@ alias vs='vim ~/.ssh/config'
 alias so='source ~/.zshrc'
 alias m='make'
 alias mc='make clean'
+alias copylast='fc -ln -1 | awk '{$1=$1}1' | pbcopy '
 alias sshh='chmod 700 ~/.ssh/config'
+alias sshf='ssh -o "StrictHostKeyChecking no"'
+function teleport(){cat $1 | ssh -o "StrictHostKeyChecking no" $2 "sed 's/{ctrl-v}{ctrl-m}//g' | bash"}
 function ch(){chmod 700 $1 }
 function vadd(){cd $1 && git config --get remote.origin.url | pbcopy && cd - && config submodule add `pbpaste` $1}
 # Add Docker support
@@ -135,7 +137,6 @@ web-search
 colored-man-pages
 bwana
 rails
-thefuck
 docker
 ssh
 )
