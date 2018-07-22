@@ -42,7 +42,6 @@ autoload -Uz compinit && compinit -i
 zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 #add z to zsh
-. /usr/local/etc/profile.d/z.sh
 path+=('/Library/Frameworks/Mono.framework/Versions/Current/bin')
 #alias matlabgui='/Applications/MATLAB_R2017b.app/bin/matlab -nosplash'
 #alias matlab='/Applications/MATLAB_R2017b.app/bin/matlab -nodesktop -nosplash'
@@ -173,6 +172,7 @@ DEFAULT_USER='Ezo'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 case `uname` in
   Darwin)
+    . /usr/local/etc/profile.d/z.sh
     alias ctags="`brew --prefix`/bin/ctags"
     # Virtualenv/VirtualenvWrapper
     source /usr/local/bin/virtualenvwrapper.sh
