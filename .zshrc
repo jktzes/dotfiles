@@ -187,10 +187,13 @@ case `uname` in
       zstyle ':completion:*:ssh:*' hosts $h
       zstyle ':completion:*:slogin:*' hosts $h
     fi
+    plugins=(
+    bwana
+    )
   ;;
   Linux)
     fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
-
+    ZSH_DISABLE_COMPFIX=true
   ;;
   FreeBSD)
     # commands for FreeBSD go here
