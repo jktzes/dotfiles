@@ -15,7 +15,6 @@ export PATH=/Users/Ezo/custom/docker/bin:$PATH
 export EDITOR='/usr/bin/vim'
 function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
-alias ctags="`brew --prefix`/bin/ctags"
 alias again='history | tail -n 200 | cut -c 8- | > commands.sh'
 alias p3='python3'
 alias p='python'
@@ -58,19 +57,7 @@ alias jn='jupyter notebook'
 alias sget='wget -c --retry-connrefused --tries=0 --timeout=5 --load-cookies=cookies.txt'
 # Copy current directory
 alias cpwd="pwd | tr -d '\n' | pbcopy"
-# Virtualenv/VirtualenvWrapper
-source /usr/local/bin/virtualenvwrapper.sh
-h=()
-if [[ -r ~/.ssh/config ]]; then
-  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
-fi
-if [[ -r ~/.ssh/known_hosts ]]; then
-  h=($h ${${${(f)"$(cat ~/.ssh/known_hosts{,2} || true)"}%%\ *}%%,*}) 2>/dev/null
-fi
-if [[ $#h -gt 0 ]]; then
-  zstyle ':completion:*:ssh:*' hosts $h
-  zstyle ':completion:*:slogin:*' hosts $h
-fi
+
 # Added command-not-found
 #if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi
 # Add support for command-not-found
@@ -186,10 +173,24 @@ DEFAULT_USER='Ezo'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 case `uname` in
   Darwin)
-    # commands for OS X go here
+    alias ctags="`brew --prefix`/bin/ctags"
+    # Virtualenv/VirtualenvWrapper
+    source /usr/local/bin/virtualenvwrapper.sh
+    h=()
+    if [[ -r ~/.ssh/config ]]; then
+      h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+    fi
+    if [[ -r ~/.ssh/known_hosts ]]; then
+      h=($h ${${${(f)"$(cat ~/.ssh/known_hosts{,2} || true)"}%%\ *}%%,*}) 2>/dev/null
+    fi
+    if [[ $#h -gt 0 ]]; then
+      zstyle ':completion:*:ssh:*' hosts $h
+      zstyle ':completion:*:slogin:*' hosts $h
+    fi
   ;;
   Linux)
     fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
+
   ;;
   FreeBSD)
     # commands for FreeBSD go here
