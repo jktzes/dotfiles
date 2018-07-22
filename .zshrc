@@ -194,6 +194,19 @@ case `uname` in
   Linux)
     fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
     ZSH_DISABLE_COMPFIX=true
+    export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/home/ubuntu/src/cntk/bin:/usr/local/mpi/bin:$PATH
+    export LD_LIBRARY_PATH=/home/ubuntu/src/cntk/bindings/python/cntk/libs:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extr    as/CUPTI/lib64:/usr/local/mpi/lib:$LD_LIBRARY_PATH
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+    export PYTHONPATH=/home/ubuntu/src/cntk/bindings/python
+    if [ -e /usr/lib/libmpi_cxx.so ]; then
+      export LD_PRELOAD=/usr/lib/libmpi_cxx.so
+    fi
+    export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/usr/local/mpi/bin:$PATH
+    export LD_LIBRARY_PATH_WITH_DEFAULT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUP    TI/lib64:/usr/local/mpi/lib:/lib/:/lib/nccl/cuda-9.0/lib/:$LD_LIBRARY_PATH_WITH_DEFAULT_CUDA
+    export LD_LIBRARY_PATH_WITHOUT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/lib:/usr/lib:/usr/local/mpi/lib:/lib/:$LD_LIBRARY_PATH_WITHOUT_CUD    A
+    export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/loca    l/mpi/lib:/lib/:$LD_LIBRARY_PATH
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+    export PATH=$HOME/anaconda3/bin/:$PATH
   ;;
   FreeBSD)
     # commands for FreeBSD go here
