@@ -2,6 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
+ZSH_DISABLE_COMPFIX=true
 export PATH=/usr/local/bin:$PATH
 export ZSH=$HOME/.oh-my-zsh
 export TERM=xterm-256color
@@ -191,7 +192,6 @@ if [[ `uname` == 'Darwin' ]]; then
   bwana
   )
 elif [[ `uname` == 'Linux' ]]; then
-  ZSH_DISABLE_COMPFIX=true
   export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/home/ubuntu/src/cntk/bin:/usr/local/mpi/bin:$PATH
   export LD_LIBRARY_PATH=/home/ubuntu/src/cntk/bindings/python/cntk/libs:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:$LD_LIBRARY_PATH
   export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
