@@ -184,7 +184,17 @@ DEFAULT_USER='Ezo'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
+case `uname` in
+  Darwin)
+    # commands for OS X go here
+  ;;
+  Linux)
+    fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
+  ;;
+  FreeBSD)
+    # commands for FreeBSD go here
+  ;;
+esac
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.linuxbrew/bin:$PATH"
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')

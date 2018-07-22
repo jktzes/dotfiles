@@ -48,6 +48,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'janko-m/vim-test'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'bronson/vim-visual-star-search'
+Plugin 'itchyny/lightline.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -64,7 +65,7 @@ set tags=tags;
 " open tag in new tab
 :nnoremap <silent><C-]> <C-w><C-]><C-w>T
 " Hide status line
-set laststatus=1
+set laststatus=2
 augroup atcmds
     autocmd!
     autocmd FileType nerdtree syntax match NERDTreeHideCWD #^[</].*$# conceal
@@ -200,6 +201,11 @@ endif
 " COLOR THEMES
 syntax on
 silent! colorscheme snazzy
+let g:lightline = {
+      \ 'colorscheme': 'snazzy',
+      \ }
+" remove redundent info in status line
+set noshowmode
 " Font
 :set guifont=Menlo\ for\ Powerline
 
