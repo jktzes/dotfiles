@@ -171,47 +171,41 @@ DEFAULT_USER='Ezo'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-case `uname` in
-  Darwin)
-    . /usr/local/etc/profile.d/z.sh
-    alias ctags="`brew --prefix`/bin/ctags"
-    # Virtualenv/VirtualenvWrapper
-    source /usr/local/bin/virtualenvwrapper.sh
-    h=()
-    if [[ -r ~/.ssh/config ]]; then
-      h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
-    fi
-    if [[ -r ~/.ssh/known_hosts ]]; then
-      h=($h ${${${(f)"$(cat ~/.ssh/known_hosts{,2} || true)"}%%\ *}%%,*}) 2>/dev/null
-    fi
-    if [[ $#h -gt 0 ]]; then
-      zstyle ':completion:*:ssh:*' hosts $h
-      zstyle ':completion:*:slogin:*' hosts $h
-    fi
-    plugins=(
-    bwana
-    )
-  ;;
-  Linux)
-    ZSH_DISABLE_COMPFIX=true
-    export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/home/ubuntu/src/cntk/bin:/usr/local/mpi/bin:$PATH
-    export LD_LIBRARY_PATH=/home/ubuntu/src/cntk/bindings/python/cntk/libs:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:$LD_LIBRARY_PATH
-    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-    export PYTHONPATH=/home/ubuntu/src/cntk/bindings/python
-    if [ -e /usr/lib/libmpi_cxx.so ]; then
-      export LD_PRELOAD=/usr/lib/libmpi_cxx.so
-    fi
-    export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/usr/local/mpi/bin:$PATH
-    export LD_LIBRARY_PATH_WITH_DEFAULT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:/lib/:/lib/nccl/cuda-9.0/lib/:$LD_LIBRARY_PATH_WITH_DEFAULT_CUDA
-    export LD_LIBRARY_PATH_WITHOUT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/lib:/usr/lib:/usr/local/mpi/lib:/lib/:$LD_LIBRARY_PATH_WITHOUT_CUDA
-    export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:/lib/:$LD_LIBRARY_PATH
-    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-    export PATH=$HOME/anaconda3/bin/:$PATH
-  ;;
-  FreeBSD)
-    # commands for FreeBSD go here
-  ;;
-esac
+if [[ `uname` == 'Darwin' ]]; then
+  . /usr/local/etc/profile.d/z.sh
+  alias ctags="`brew --prefix`/bin/ctags"
+  # Virtualenv/VirtualenvWrapper
+  source /usr/local/bin/virtualenvwrapper.sh
+  h=()
+  if [[ -r ~/.ssh/config ]]; then
+    h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+  fi
+  if [[ -r ~/.ssh/known_hosts ]]; then
+    h=($h ${${${(f)"$(cat ~/.ssh/known_hosts{,2} || true)"}%%\ *}%%,*}) 2>/dev/null
+  fi
+  if [[ $#h -gt 0 ]]; then
+    zstyle ':completion:*:ssh:*' hosts $h
+    zstyle ':completion:*:slogin:*' hosts $h
+  fi
+  plugins=(
+  bwana
+  )
+elif [[ `uname` == 'Linux' ]]; then
+  ZSH_DISABLE_COMPFIX=true
+  export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/home/ubuntu/src/cntk/bin:/usr/local/mpi/bin:$PATH
+  export LD_LIBRARY_PATH=/home/ubuntu/src/cntk/bindings/python/cntk/libs:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:$LD_LIBRARY_PATH
+  export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+  export PYTHONPATH=/home/ubuntu/src/cntk/bindings/python
+  if [ -e /usr/lib/libmpi_cxx.so ]; then
+    export LD_PRELOAD=/usr/lib/libmpi_cxx.so
+  fi
+  export PATH=/usr/local/cuda/bin:/usr/local/bin:/opt/aws/bin:/usr/local/mpi/bin:$PATH
+  export LD_LIBRARY_PATH_WITH_DEFAULT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:/lib/:/lib/nccl/cuda-9.0/lib/:$LD_LIBRARY_PATH_WITH_DEFAULT_CUDA
+  export LD_LIBRARY_PATH_WITHOUT_CUDA=/usr/lib64/openmpi/lib/:/usr/local/lib:/usr/lib:/usr/local/mpi/lib:/lib/:$LD_LIBRARY_PATH_WITHOUT_CUDA
+  export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib/:/usr/local/cuda/lib64:/usr/local/lib:/usr/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/mpi/lib:/lib/:$LD_LIBRARY_PATH
+  export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+  export PATH=$HOME/anaconda3/bin/:$PATH
+fi
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.linuxbrew/bin:$PATH"
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
