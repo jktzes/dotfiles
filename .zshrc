@@ -121,7 +121,6 @@ zsh-syntax-highlighting
 tmux
 web-search
 colored-man-pages
-bwana
 rails
 docker
 ssh
