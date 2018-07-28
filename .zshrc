@@ -208,7 +208,6 @@ elif [[ `uname` == 'Linux' ]]; then
 fi
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.linuxbrew/bin:$PATH"
-fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
 export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
 export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
