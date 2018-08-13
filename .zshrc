@@ -3,6 +3,7 @@
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
 ZSH_DISABLE_COMPFIX=true
+set -o vi
 export PATH=/usr/local/bin:$PATH
 export ZSH=$HOME/.oh-my-zsh
 export TERM=xterm-256color
@@ -21,6 +22,7 @@ function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbc
 alias again='history | tail -n 200 | cut -c 8- | > commands.sh'
 alias p3='python3'
 alias p='python'
+alias p2='~/Documents/Developing/remote-setup/spot-p2.sh'
 alias vv='source venv/bin/activate'
 alias wechat='irssi -c 127.0.0.1 -p 6667'
 alias docker_restart="osascript -e 'quit app \"Docker\"' && open -a Docker"
