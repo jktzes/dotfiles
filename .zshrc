@@ -3,10 +3,11 @@
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
 ZSH_DISABLE_COMPFIX=true
-set -o vi
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/Ezo/Slyz/makeslyz/google-service-account-credentials.json"
 export PATH=/usr/local/bin:$PATH
 export ZSH=$HOME/.oh-my-zsh
 export TERM=xterm-256color
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 # Setup golang
 export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
@@ -17,8 +18,13 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Add my first customed path
 export PATH=/Users/Ezo/custom/docker/bin:$PATH
 export EDITOR='/usr/bin/vim'
+export RI="--format ansi --width 70"
 function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
+function goto(){ mkdir "$1" && cd "$1" }
+function n4() {noglob rake neo4j:generate_schema_migration[constraint,$1,uuid]}
+alias ct="ctags -R *"
+alias help="tldr"
 alias again='history | tail -n 200 | cut -c 8- | > commands.sh'
 alias p3='python3'
 alias p='python'
@@ -126,9 +132,10 @@ zsh-syntax-highlighting
 tmux
 web-search
 colored-man-pages
-rails
 docker
 ssh
+rails
+bundler
 )
 
 
@@ -213,3 +220,4 @@ export PATH="$HOME/.linuxbrew/bin:$PATH"
 export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
 export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+eval "$(rbenv init -)"

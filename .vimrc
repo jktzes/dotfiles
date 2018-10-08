@@ -1,11 +1,8 @@
 set nocompatible              
-filetype off                  
-syntax on
-
+filetype off
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/MatchTagAlways'
@@ -13,14 +10,12 @@ Plugin 'chrisbra/Recover.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'w0rp/ale'
 Plugin 'chrisbra/csv.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/goyo.vim'
 Plugin 'Yggdroot/indentLine'
-Plugin 'yegappan/mru'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
+Plugin 'jktzes/nerdtree'
 Plugin 'danro/rename.vim'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
@@ -49,6 +44,12 @@ Plugin 'janko-m/vim-test'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'bronson/vim-visual-star-search'
 Plugin 'itchyny/lightline.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'airblade/vim-rooter'
+Plugin 'ecomba/vim-ruby-refactoring'
+Plugin 'mileszs/ack.vim'
+Plugin 'tmhedberg/matchit'
+Plugin 'vim-scripts/TaskList.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -100,6 +101,9 @@ augroup atcmds
     " and set to NASM syntax highlighting
     autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0 syntax=nasm
 augroup end
+"rails auto complete
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_rails = 1
 " KEY MAPS
 " F1 key is reserved as help function
 let mapleader=" "
@@ -107,24 +111,31 @@ let mapleader=" "
 :inoremap JK <esc> 
 "never remap <C-c> since it's the last resort to esc
 :nmap vv :tabe ~/.vimrc <CR>
-:cmap <esc> UndotreeToggle <CR>
 :cmap [ UltiSnipsEdit <CR>
 map <F1> :tabp <CR>
 imap <F1> :tabp <CR>
 :noremap <F2>  :tabn<CR>
 "in tmux <F3>: previous window
 "in tmux <F4>: next window
-:noremap <F5>  :!open -a Safari %<CR><CR>
+:noremap <F5>  :UndotreeToggle<CR>
+":noremap <F5>  :!open -a Safari %<CR><CR>
 "in tmux <F6>: the master key
-":noremap <F7>  
-":noremap <F8>  
+:cmap <F7> Tabularize /:\zs <CR>
+:noremap <F8>  :FZF<CR>
 ":noremap <F9>
 ":noremap <F10> :tabc <CR>
 :"noremap <F11> 
 ":noremap <F12> 
-
+if exists(":Tabularize")
+    nmap <Leader>a= :Tabularize /=<CR>
+    vmap <Leader>a= :Tabularize /=<CR>
+    nmap <Leader>a: :Tabularize /:\zs<CR>
+    vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
 " Toggle Tagbar
 :noremap <leader>t :TagbarToggle<CR>
+" Toggle todo list
+map <leader>v <Plug>TaskList
 " navigate like Firefox
 nnoremap <C-t>     :tabnew<CR>
 nnoremap <C-w>     :tabc<CR>
@@ -200,10 +211,10 @@ if !exists('g:undotree_SetFocusWhenToggle')
 endif
 " COLOR THEMES
 syntax on
-silent! colorscheme snazzy
+colorscheme snazzy
 let g:lightline = {
-      \ 'colorscheme': 'snazzy',
-      \ }
+\ 'colorscheme': 'snazzy',
+\ }
 " remove redundent info in status line
 set noshowmode
 " Font
@@ -285,9 +296,17 @@ nmap ga <Plug>(EasyAlign)
 
 let g:NERDCustomDelimiters = { 'c' : { 'left': '//','right': '' }, 'js': { 'left': '//','right': '' } }
 
+let g:nerdtree_tabs_focus_on_files=1
 " Show index number for tab
 set showtabline=1  " 1 to show tabline only when more than one tab is present
 set tabline=%!MyTabLine()  " custom tab pages line
+
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+command! ProjectFiles execute 'Files' s:find_git_root()
+
 function! MyTabLine()
         let s = '' " complete tabline goes here
         " loop through each tab page
