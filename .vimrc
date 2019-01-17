@@ -5,61 +5,98 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+" add syntax highlight for typescript
+"Plugin 'leafgarland/typescript-vim'
+" matchParen for html tags 
 Plugin 'Valloric/MatchTagAlways'
-Plugin 'chrisbra/Recover.vim'
+" auto complete engine
 Plugin 'Valloric/YouCompleteMe'
+" linter and syntax check
 Plugin 'w0rp/ale'
+" syntax support for csv
 Plugin 'chrisbra/csv.vim'
+" fast html typing 
 Plugin 'mattn/emmet-vim'
+" fuzzy file name search
 Plugin 'junegunn/fzf'
-Plugin 'junegunn/goyo.vim'
+" add indentaion lines |
 Plugin 'Yggdroot/indentLine'
+" fast commenting
 Plugin 'scrooloose/nerdcommenter'
+" document tree
 Plugin 'jktzes/nerdtree'
+" add ability to rename file without leaving buffer
 Plugin 'danro/rename.vim'
+" use tab to fill auto complete
 Plugin 'ervandew/supertab'
-Plugin 'majutsushi/tagbar'
-Plugin 'wincent/terminus'
+" use ctag to scan class and function names, better code navigation for c
+Plugin 'majutsushi/tagbar' " add ability to copy and paste across tmux and vim Plugin 'wincent/terminus'
+" snippet manager
 Plugin 'SirVer/ultisnips'
+" save undo histories
 Plugin 'mbbill/undotree'
+" use C+l to lock cap
 Plugin 'tpope/vim-capslock'
+" automatically close html tags
 Plugin 'alvan/vim-closetag'
-Plugin 'ap/vim-css-color'
+" extra CSS3 syntax support that's not in polygot
 Plugin 'hail2u/vim-css3-syntax'
+" fast aligning TODO: learn to use vim-easy-align
 Plugin 'junegunn/vim-easy-align'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-fugitive'
-Plugin 'farmergreg/vim-lastplace'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'tpope/vim-obsession'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'heavenshell/vim-pydocstring'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-sleuth'
-Plugin 'connorholyday/vim-snazzy'
-Plugin 'tpope/vim-surround'
-Plugin 'janko-m/vim-test'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'bronson/vim-visual-star-search'
-Plugin 'itchyny/lightline.vim'
+" another fast aligning tool TODO: learn to use tabular
 Plugin 'godlygeek/tabular'
+" remember the location when files were closed last time
+Plugin 'farmergreg/vim-lastplace'
+" SublimeText's multi cursor
+Plugin 'terryma/vim-multiple-cursors'
+" open tabs from nerdtree
+Plugin 'jistr/vim-nerdtree-tabs'
+" color scheme
+Plugin 'connorholyday/vim-snazzy'
+" use 'cs' key to change matching characters at once
+Plugin 'tpope/vim-surround'
+" seamlessly navigate between tmux and vim panels
+Plugin 'christoomey/vim-tmux-navigator'
+" press * to see all matches
+Plugin 'bronson/vim-visual-star-search'
+" the bar at the bottom to show file name and date
+Plugin 'itchyny/lightline.vim'
+" keep the directory at project root for better file navigation
 Plugin 'airblade/vim-rooter'
-Plugin 'ecomba/vim-ruby-refactoring'
+" global search tool similar to grep
 Plugin 'mileszs/ack.vim'
+" use % in html latex and other occasions
 Plugin 'tmhedberg/matchit'
+" use leader + v to show todo list
 Plugin 'vim-scripts/TaskList.vim'
+" repl for vim
+Plugin 'jpalardy/vim-slime'
+" don't know what this does TODO:try to disable tern_for_vim
+Plugin 'ternjs/tern_for_vim'
+" coffeescript syntax support for vim
+Plugin 'kchmck/vim-coffee-script'
+" add completion for Typescript
+Plugin 'Quramy/tsuquyomi'
+" add support for emmet snippet
+Plugin 'mattn/webapi-vim'
+" add syntax support for javascript
+Plugin 'pangloss/vim-javascript'
+" add syntax support for jsx
+Plugin 'mxw/vim-jsx'
+" add support for markdown editing 
+Plugin 'prurigro/vim-markdown-concealed'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-
 " Set autorefresh when this file is edited
 :set autoread
-" Set auto source
-autocmd! bufwritepost ~/.vimrc source %
+" turn off backup when suddenly close files
+set nobackup
+set noswapfile
+" adjust render speed to make scrolling faster
+set re=1
 " ctags optimization
 set autochdir
 set tags=tags;
@@ -69,6 +106,9 @@ set tags=tags;
 set laststatus=2
 augroup atcmds
     autocmd!
+    " Set auto source
+    autocmd! bufwritepost ~/.vimrc source %
+
     autocmd FileType nerdtree syntax match NERDTreeHideCWD #^[</].*$# conceal
     autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
     autocmd BufNewFile,BufRead *.scss set ft=scss.css
@@ -80,8 +120,11 @@ augroup atcmds
     autocmd FileType c set omnifunc=ccomplete#Complete
     
     " two space for html css and etc
-    autocmd FileType html,xhtml,css,xml,xslt,rb set shiftwidth=2 softtabstop=2
+    autocmd FileType html,xhtml,css,xml,xslt,rb set shiftwidth=2 softtabstop=2 
+    " has to use setlocal or the eslint will be upset
+    autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab
     
+    autocmd FileType typescript set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
     " two space indentation for some files
     autocmd FileType vim,lua,nginx set shiftwidth=2 softtabstop=2
     
@@ -101,6 +144,7 @@ augroup atcmds
     " and set to NASM syntax highlighting
     autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0 syntax=nasm
 augroup end
+
 "rails auto complete
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
@@ -118,14 +162,19 @@ imap <F1> :tabp <CR>
 "in tmux <F3>: previous window
 "in tmux <F4>: next window
 :noremap <F5>  :UndotreeToggle<CR>
-":noremap <F5>  :!open -a Safari %<CR><CR>
 "in tmux <F6>: the master key
 :cmap <F7> Tabularize /:\zs <CR>
 :noremap <F8>  :FZF<CR>
-":noremap <F9>
+"in tmux <F9>: switch session
+:noremap <F10>  :!open -a Safari %<CR><CR>
 ":noremap <F10> :tabc <CR>
 :"noremap <F11> 
 ":noremap <F12> 
+" Search the highlighted word with Ack
+noremap <Leader>a :Ack <cword><cr>
+
+map <Leader>ts :call RunCurrentSpecFile()<CR>
+
 if exists(":Tabularize")
     nmap <Leader>a= :Tabularize /=<CR>
     vmap <Leader>a= :Tabularize /=<CR>
@@ -143,23 +192,26 @@ inoremap <C-t>     <Esc>:tabnew<CR>
 " Add global youcompleteme conf
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
+" set tmux to be the targe of slime
+let g:slime_target = "tmux"
+
 " Turn off ycm syntax check
 let g:ycm_show_diagnostics_ui = 0
 
 " Add html autocomplete to vim and sassy support
 :set omnifunc=csscomplete#CompleteCSS
-          
+
 let g:mta_use_matchparen_group = 1
 
 " Show line number
 :set number
 :set ruler
+:set cursorline
+" fix slow scroll
+:set lazyredraw
 
 " Automatically close the tags
 imap ,/ </<C-X><C-O>
-
-" Add docstring support
-nmap <silent> <C-d> <Plug>(pydocstring)
 
 " Remap the weird nerdtree tab bug
 map <leader>e :vertical resize 25<CR>
@@ -212,9 +264,18 @@ endif
 " COLOR THEMES
 syntax on
 colorscheme snazzy
+let g:SnazzyTransparent = 1
 let g:lightline = {
 \ 'colorscheme': 'snazzy',
+\ 'component_function': {
+\   'filename': 'LightLineFilename'
 \ }
+\ }
+
+function! LightLineFilename()
+  return expand('%:p:h')
+endfunction
+
 " remove redundent info in status line
 set noshowmode
 " Font
@@ -240,16 +301,28 @@ let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_shortcut = '>'
 
 " Add slim support in emmet
+
+autocmd FileType html,css,javascript.jsx EmmetInstall
 let g:closetag_close_shortcut = '<leader>>'
 
-let g:user_zen_settings = {
+let g:user_emmet_settings = {
 \  'haml': {
 \    'extends': 'html',
 \   },
 \  'slim': {
 \    'extends': 'html',
 \   },
+\  'javascript' : {
+\      'extends' : 'jsx',
+\   },
+\  'javascript.jsx': {
+\      'extends' : 'jsx',
+\   } 
 \}
+
+let emmet_html5 = 0
+
+"let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
 
 "Add support for snippet
 "If you want :UltiSnipsEdit to split your window.
@@ -260,15 +333,19 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+
+" YCM support for typescript
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers['typescript'] = ['.']
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " After this is configured, :ALEFix will try and fix your JS code with ESLint.
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\}
+let b:ale_linters = {'javascript': ['eslint']}
 " silent the ale as I make changes to the document
 let g:ale_lint_on_text_changed = 'never' 
 " disable lint on enter for ale 

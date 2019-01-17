@@ -23,6 +23,8 @@ function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
 function goto(){ mkdir "$1" && cd "$1" }
 function n4() {noglob rake neo4j:generate_schema_migration[constraint,$1,uuid]}
+alias docker-daemon="open --background -a Docker"
+alias yd="youtube-dl"
 alias ct="ctags -R *"
 alias help="tldr"
 alias again='history | tail -n 200 | cut -c 8- | > commands.sh'
@@ -136,6 +138,7 @@ docker
 ssh
 rails
 bundler
+thefuck
 )
 
 
@@ -221,3 +224,9 @@ export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
 export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 eval "$(rbenv init -)"
+
+
+#complete later
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
