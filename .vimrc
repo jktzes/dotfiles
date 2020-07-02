@@ -6,13 +6,9 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 " add syntax highlight for typescript
-"Plugin 'leafgarland/typescript-vim'
+Plugin 'leafgarland/typescript-vim'
 " matchParen for html tags 
 Plugin 'Valloric/MatchTagAlways'
-" auto complete engine
-Plugin 'Valloric/YouCompleteMe'
-" linter and syntax check
-Plugin 'w0rp/ale'
 " syntax support for csv
 Plugin 'chrisbra/csv.vim'
 " fast html typing 
@@ -24,7 +20,7 @@ Plugin 'Yggdroot/indentLine'
 " fast commenting
 Plugin 'scrooloose/nerdcommenter'
 " document tree
-Plugin 'jktzes/nerdtree'
+Plugin 'scrooloose/nerdtree'
 " add ability to rename file without leaving buffer
 Plugin 'danro/rename.vim'
 " use tab to fill auto complete
@@ -32,7 +28,6 @@ Plugin 'ervandew/supertab'
 " use ctag to scan class and function names, better code navigation for c
 Plugin 'majutsushi/tagbar' " add ability to copy and paste across tmux and vim Plugin 'wincent/terminus'
 " snippet manager
-Plugin 'SirVer/ultisnips'
 " save undo histories
 Plugin 'mbbill/undotree'
 " use C+l to lock cap
@@ -81,17 +76,29 @@ Plugin 'Quramy/tsuquyomi'
 Plugin 'mattn/webapi-vim'
 " add syntax support for javascript
 Plugin 'pangloss/vim-javascript'
-" add syntax support for jsx
-Plugin 'mxw/vim-jsx'
 " add support for markdown editing 
 Plugin 'prurigro/vim-markdown-concealed'
-
+" add support for postcss
+Plugin 'stephenway/postcss.vim'
+" add autopair brackers
+Plugin 'jiangmiao/auto-pairs'
+" add suuport for wxmp
+Plugin 'chemzqm/wxapp.vim'
+" enhanved multi-file search
+Plugin 'wincent/ferret'
+" enhanced regular expression search
+Plugin 'BurntSushi/ripgrep'
+" hard mode for learning new key strokes
+Plugin 'wikitopian/hardmode'
+" the famous easy-motion for fast navigation
+Plugin 'easymotion/vim-easymotion'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 " Set autorefresh when this file is edited
 :set autoread
+:set smartindent
 " turn off backup when suddenly close files
 set nobackup
 set noswapfile
@@ -122,11 +129,12 @@ augroup atcmds
     " two space for html css and etc
     autocmd FileType html,xhtml,css,xml,xslt,rb set shiftwidth=2 softtabstop=2 
     " has to use setlocal or the eslint will be upset
-    autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab
+    autocmd FileType javascript,json setlocal tabstop=2 shiftwidth=2 expandtab
     
-    autocmd FileType typescript set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
     " two space indentation for some files
     autocmd FileType vim,lua,nginx set shiftwidth=2 softtabstop=2
+    autocmd FileType tsx,typescript setlocal shiftwidth=2 tabstop=2  softtabstop=2 expandtab
+    autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
     
     " for CSS, also have things in braces indented:
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -145,6 +153,7 @@ augroup atcmds
     autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0 syntax=nasm
 augroup end
 
+let g:typescript_indent_disable = 1
 "rails auto complete
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
@@ -166,7 +175,7 @@ imap <F1> :tabp <CR>
 :cmap <F7> Tabularize /:\zs <CR>
 :noremap <F8>  :FZF<CR>
 "in tmux <F9>: switch session
-:noremap <F10>  :!open -a Safari %<CR><CR>
+:noremap <F10>  :!open -a Google\ Chrome %<CR><CR>
 ":noremap <F10> :tabc <CR>
 :"noremap <F11> 
 ":noremap <F12> 
@@ -191,6 +200,8 @@ nnoremap <C-w>     :tabc<CR>
 inoremap <C-t>     <Esc>:tabnew<CR>
 " Add global youcompleteme conf
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" Turn off youcompleteme preview
+set completeopt-=preview
 
 " set tmux to be the targe of slime
 let g:slime_target = "tmux"
@@ -204,7 +215,7 @@ let g:ycm_show_diagnostics_ui = 0
 let g:mta_use_matchparen_group = 1
 
 " Show line number
-:set number
+:set relativenumber
 :set ruler
 :set cursorline
 " fix slow scroll
@@ -236,6 +247,12 @@ function! ToggleH()
         match none
     endif
 endfunction
+
+function! ShowDiff()
+  :w !diff % - 
+endfunction
+
+nnoremap <leader>2 :call ShowDiff()<CR>
 
 nnoremap <leader>1 :call ToggleH()<CR>
 " Open new files in tabs
@@ -284,17 +301,13 @@ set noshowmode
 " filenames like *.xml, *.html, *.xhtml, ...
 " These are the file extensions where this plugin is enabled.
 "
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml, *.js'
-
-" filenames like *.xml, *.xhtml, ...
-" This will make the list of non-closing tags self-closing in the specified files.
-"
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-
-" integer value [0|1]
-" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
-"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx,*.tsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
 let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_regions =  {
+\ 'typescript.tsx': 'jsxRegion,tsxRegion',
+\ 'javascript.jsx': 'jsxRegion',
+\ }
 
 " Shortcut for closing tags, default is '>'
 "
@@ -352,6 +365,8 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 " only lint on save
 let g:ale_lint_on_save = 1
+
+map <leader>tt :ALEToggle<CR>
 
 " Change multicursor quit key
 let g:multi_cursor_quit_key = '`'

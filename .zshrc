@@ -13,16 +13,30 @@ export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 # Add for macports
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Add my first customed path
 export PATH=/Users/Ezo/custom/docker/bin:$PATH
-export EDITOR='/usr/bin/vim'
+export EDITOR=vim
 export RI="--format ansi --width 70"
+export EXPO_APPLE_ID="ezodevelops@gmail.com"
+export EXPO_APPLE_ID_PASSWORD="JJLwK_2Te8L@GgKW"
+export DELIVER_USERNAME="ezodevelops@gmail.com"
+export DELIVER_PASSWORD="JJLwK_2Te8L@GgKW"
+export EXPO_APP_NAME="Read-N-Search"
+export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD="howx-otnv-apac-dmoz"
+export FASTLANE_USER="ezodevelops@gmail.com"
+export FASTLANE_PASSWORD="JJLwK_2Te8L@GgKW"
+export PROFESSIONAL_SANDBOX="wx224b46ba3f86eeb2"
+export BUNDLE_INDENTIFIER="com.getomnilink"
+function git-quick(){ git commit -am ${1-'patch'} }
 function 1p(){ eval $(op signin my) }
 function pass(){ op get item "$1" | jq -r ".details.password" | tr -d '\n' | pbcopy && echo "copied"}
 function goto(){ mkdir "$1" && cd "$1" }
 function n4() {noglob rake neo4j:generate_schema_migration[constraint,$1,uuid]}
+function create() { npx create-react-app $1 --typescript && cd $1 && npm install @types/react }
 alias docker-daemon="open --background -a Docker"
 alias yd="youtube-dl"
 alias ct="ctags -R *"
@@ -46,6 +60,8 @@ alias mc='make clean'
 alias copylast='fc -ln -1 | awk '{$1=$1}1' | pbcopy '
 alias sshh='chmod 700 ~/.ssh/config'
 alias sshf='ssh -o "StrictHostKeyChecking no"'
+unsetopt nomatch
+function rosie(){ imessage -c '+8613001281837' -t "🚀 `echo \""$@"\"`" }
 function teleport(){cat $1 | ssh -o "StrictHostKeyChecking no" $2 "sed 's/{ctrl-v}{ctrl-m}//g' | bash"}
 function ch(){chmod 700 $1 }
 function vadd(){cd $1 && git config --get remote.origin.url | pbcopy && cd - && config submodule add `pbpaste` $1}
@@ -141,6 +157,19 @@ bundler
 thefuck
 )
 
+# where proxy
+proxy () {
+  export http_proxy="http://127.0.0.1:8888"
+  export https_proxy="http://127.0.0.1:8888"
+  echo "HTTP Proxy on"
+}
+
+# where noproxy
+noproxy () {
+  unset http_proxy
+  unset https_proxy
+  echo "HTTP Proxy off"
+}
 
 source $ZSH/oh-my-zsh.sh
 
@@ -188,7 +217,7 @@ if [[ `uname` == 'Darwin' ]]; then
   . /usr/local/etc/profile.d/z.sh
   alias ctags="`brew --prefix`/bin/ctags"
   # Virtualenv/VirtualenvWrapper
-  source /usr/local/bin/virtualenvwrapper.sh
+  #source /usr/local/bin/virtualenvwrapper.sh
   h=()
   if [[ -r ~/.ssh/config ]]; then
     h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
@@ -225,8 +254,36 @@ export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 eval "$(rbenv init -)"
 
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
-#complete later
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
 
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
